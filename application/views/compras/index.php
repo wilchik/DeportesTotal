@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Compras y proveedores | Deportes Total</title>
+<style>
+*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}body{margin:0;background:#eef1f3;color:#263238}.topbar{background:#263f59;color:#fff;padding:15px 25px;border-bottom:4px solid #1b3045;display:flex;justify-content:space-between;align-items:center;gap:12px}.topbar a{color:#fff;text-decoration:none;background:#a93636;padding:9px 13px;border-radius:3px}.container{max-width:1150px;margin:28px auto;padding:0 18px}.head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px}.head h2{margin:0;color:#263f59}.muted{color:#6c7a86;font-size:13px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{display:inline-block;padding:10px 14px;background:#315f85;color:#fff;text-decoration:none;border:0;border-radius:3px;cursor:pointer;font-weight:bold}.btn.gray{background:#687783}.card{background:#fff;border:1px solid #cbd3da;padding:22px;margin-bottom:18px}.msg{padding:12px;margin-bottom:15px;background:#e8f2e8;border-left:4px solid #4b8a4b}.msg.error{background:#ffeded;border-color:#b33}.scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:650px}th,td{text-align:left;padding:12px;border-bottom:1px solid #e3e7ea}th{background:#e9eef2;font-size:12px;text-transform:uppercase}@media(max-width:700px){.head,.topbar{align-items:flex-start;flex-direction:column}}
+</style><link rel="stylesheet" href="<?= base_url('assets/css/app-sidebar.css') ?>">
+</head><body class="app-layout">
+<?php $this->load->view('partials/sidebar'); ?>
+<header class="topbar"><strong>DEPORTES TOTAL | Compras y proveedores</strong></header>
+<main class="container">
+<div class="head"><div><h2>Compras de mercancía</h2><p class="muted">Registra las compras a proveedores y aumenta las existencias automáticamente.</p></div><div class="actions"><a class="btn" href="<?= site_url('compras/nueva') ?>">+ Registrar compra</a><a class="btn gray" href="<?= site_url('compras/proveedores') ?>">Administrar proveedores</a><a class="btn gray" href="<?= site_url('inicio') ?>">Panel principal</a></div></div>
+
+
+<section class="card"><h3>Historial de compras</h3><div class="scroll"><table><thead><tr><th>N.º</th><th>Fecha</th><th>Proveedor</th><th>Productos</th><th>Registró</th><th>Total</th></tr></thead><tbody>
+<?php if (empty($compras)): ?><tr><td colspan="6">Todavía no hay compras registradas.</td></tr><?php else: foreach ($compras as $c): ?><tr><td>#<?= (int)$c->id ?></td><td><?= html_escape($c->fecha) ?></td><td><?= html_escape($c->proveedor) ?></td><td><?= (int)$c->lineas ?> referencias</td><td><?= html_escape($c->usuario) ?></td><td><strong>$<?= number_format((float)$c->total,0,',','.') ?></strong></td></tr><?php endforeach; endif; ?>
+</tbody></table></div></section></main></body></html>

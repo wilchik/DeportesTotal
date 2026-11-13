@@ -1,0 +1,58 @@
+DEPORTES TOTAL
+==============
+
+Aplicacion local de gestion para una tienda de ropa y articulos deportivos. Usa PHP, CodeIgniter 3, MariaDB/MySQL y XAMPP.
+
+MODULOS IMPLEMENTADOS
+--------------------
+- Autenticacion de usuarios y acceso por roles.
+- Panel de analisis para el propietario.
+- Punto de venta para tienda fisica, WhatsApp e Instagram, con varios productos/tallas, cliente, metodo de pago y validacion de stock.
+- Costos de adquisicion protegidos para propietario/administrador, valor conocido del inventario y reportes de ganancia bruta con costo historico por linea de venta.
+- Cierre de caja con apertura, sesiones por usuario, ventas por forma de pago/canal, movimientos de efectivo, arqueo y diferencia.
+- Busqueda del punto de venta por nombre o referencia con resultados AJAX; carrito editable y busqueda de clientes por nombre o telefono.
+- Registro de clientes desde una ventana modal del punto de venta y seleccion automatica para la venta actual.
+- Catalogo de productos por referencia y talla; alta, edicion, activacion y desactivacion.
+- Inventario con entradas, salidas e historial de movimientos. Ventas descuentan stock y compras lo aumentan.
+- Clientes: alta, edicion, consulta de historial y resumen de compras.
+- Compras y proveedores: registro de compras con multiples productos, administracion y activacion de proveedores.
+- Reportes por fechas, canal, producto, vendedor y clientes frecuentes.
+- Gestion de usuarios reservada al propietario.
+
+ROLES
+-----
+Propietario: panel, productos, inventario, clientes, compras/proveedores, reportes y usuarios. No registra ventas.
+Administrador: ventas, productos, inventario, clientes, compras/proveedores y reportes. No gestiona usuarios.
+Caja: ventas, consulta de productos y clientes, registro de clientes e historial propio. No administra productos/inventario, compras, reportes ni usuarios.
+
+SEGURIDAD
+---------
+- Los formularios de escritura usan CSRF.
+- Los tokens CSRF se actualizan en las operaciones AJAX del punto de venta.
+- Las notificaciones de resultado se cierran manualmente o desaparecen en unos 5 segundos; los errores de validacion quedan visibles.
+- Los cambios de estado y el cierre de sesion requieren POST.
+- Las contrasenas se guardan con password_hash y se verifican con password_verify.
+- El acceso se valida en servidor segun el rol.
+
+INSTALACION LOCAL
+-----------------
+1. Copia el proyecto en la carpeta htdocs de XAMPP.
+2. Inicia Apache y MySQL/MariaDB desde el panel de XAMPP.
+3. Revisa application/config/database.php y ajusta host, usuario, contrasena y base segun tu instalacion.
+4. La base deportes_total debe contar con las tablas base usuarios, productos, clientes y ventas. actualizacion_deportes_total_final.sql es una actualizacion para bases existentes; no es un volcado inicial y no debe ejecutarse a ciegas en otra estructura.
+5. En la base de datos revisada, el indice UNIQUE por referencia y talla ya esta aplicado. No vuelvas a ejecutar la migracion up en esa base. Para otra base compatible, verifica duplicados antes de aplicar database/migrations/2026_11_12_unique_product_reference_size_up.sql; la migracion down revierte el indice.
+6. Los indices auxiliares para buscar productos activos por nombre y clientes por nombre/telefono estan en database/migrations/2026_11_12_sales_search_indexes_up.sql; su migracion down revierte solo esos indices.
+7. Abre http://localhost/DeportesTotal/ e inicia sesion con una cuenta activa existente.
+8. Abre caja antes de vender: administrador y caja usan el menu "Cierre de caja". Las ventas no se registran sin una sesion abierta.
+
+DATOS DE DEMOSTRACION
+---------------------
+database/seeds/demo_deportes_total_2026_11_09_11.sql reinicia registros comerciales y carga datos ficticios del 9 al 11 de noviembre de 2026. Es DESTRUCTIVO para productos, clientes, proveedores, compras, ventas y movimientos; conserva usuarios. Ejecutalo solo sobre la base local respaldada, luego de aplicar la migracion de costos/caja. La fecha del 12-Nov queda sin registros demo. El archivo requiere mysql.exe y crea procedimientos temporales para registrar lineas y movimientos con fechas historicas.
+
+CONFIGURACION
+-------------
+La configuracion incluida apunta a http://localhost/DeportesTotal/ y a MariaDB local con usuario root sin contrasena. Ajustala a tu entorno. La cookie HttpOnly esta activada y cookie_secure permanece desactivada para permitir HTTP local. La clave de cifrado local esta definida en application/config/config.php; conserva una copia segura antes de reinstalar el proyecto y no compartas esa clave.
+
+LIMITES CONOCIDOS
+-----------------
+Las ventas provenientes de WhatsApp e Instagram se registran manualmente; no hay conexion directa con esas plataformas. El sistema no incorpora campanas automatizadas, fidelizacion ni mensajeria integrada. No se incluye un esquema inicial de base de datos en este proyecto.

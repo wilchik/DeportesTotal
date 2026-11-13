@@ -1,0 +1,35 @@
+# Configuración local con credenciales o claves
+/application/config/database.php
+/application/config/config.php
+!/application/config/database.php.example
+!/application/config/config.php.example
+/.env
+/.env.*
+!.env.example
+
+# Datos temporales, sesiones, caché y logs de CodeIgniter
+/application/cache/**
+!/application/cache/index.html
+/application/logs/**
+!/application/logs/index.html
+/application/sessions/**
+
+# Respaldos, archivos de trabajo y exportaciones privadas
+*.bak
+*.backup
+*.tmp
+*.log
+*.sql.gz
+*_snapshot_*.sql
+/private/
+/tmp/
+/output/
+
+# Entornos y archivos del editor
+/vendor/
+/node_modules/
+/.idea/
+/.vscode/
+/.phpunit.cache/
+Thumbs.db
+Desktop.ini

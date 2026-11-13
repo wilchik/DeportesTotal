@@ -1,0 +1,33 @@
+.app-notifications {
+    position: fixed;
+    top: 18px;
+    right: 20px;
+    z-index: 2000;
+    display: flex;
+    width: min(420px, calc(100vw - 32px));
+    flex-direction: column;
+    gap: 9px;
+    pointer-events: none;
+}
+.app-notification {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 13px 14px;
+    color: #263238;
+    background: #edf5ed;
+    border: 1px solid #c8dcc8;
+    border-left: 5px solid #4b8a4b;
+    box-shadow: 0 5px 16px rgba(25,43,57,.16);
+    pointer-events: auto;
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity .24s ease, transform .24s ease;
+}
+.app-notification.error { background: #faeeee; border-color: #e6c6c6; border-left-color: #b33; }
+.app-notification-message { flex: 1 1 auto; line-height: 1.45; }
+.app-notification-close { flex: 0 0 auto; padding: 0 2px; color: #52616c; background: transparent; border: 0; font-size: 20px; line-height: 1; cursor: pointer; }
+.app-notification-close:hover { color: #17232b; }
+.app-notification.is-hiding { opacity: 0; transform: translateY(-7px); }
+@media (max-width: 600px) { .app-notifications { top: 10px; right: 10px; width: calc(100vw - 20px); } }
+@media (prefers-reduced-motion: reduce) { .app-notification { transition: none; } }

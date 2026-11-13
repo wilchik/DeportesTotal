@@ -1,0 +1,34 @@
+DEPORTES TOTAL - VERSION INTEGRADA
+==================================
+
+Este proyecto conserva CodeIgniter 3 y contiene los modulos deportivos implementados que se describen en LEEME.txt: autenticacion por roles, panel del propietario, ventas, productos, inventario, clientes, compras/proveedores, reportes y gestion de usuarios.
+
+La gestion de usuarios y el panel de analisis estan reservados al propietario. Administrador y caja inician en el punto de venta; sus permisos se validan en los controladores.
+
+El punto de venta presenta primero el catalogo mediante busquedas AJAX por nombre o referencia (solo productos activos con stock) y permite armar un carrito de varias referencias/tallas. Despues se busca un cliente por nombre o telefono o se registra uno desde el modal. Los canales guardados son Tienda, WhatsApp e Instagram; los metodos de pago incluyen Efectivo, Transferencia, Tarjeta y Otro. La venta valida stock de nuevo y registra venta, salida de inventario y descuento dentro de una transaccion.
+
+Cada producto conserva costo_adquisicion DECIMAL(12,2). El costo historico por linea de venta es nullable para reconocer datos anteriores sin costo; las ganancias informan lineas desconocidas sin estimarlas. Las compras conservan su costo por detalle y actualizan el costo promedio actual del inventario cuando el costo anterior es conocido.
+
+El modulo Cierre de caja es exclusivo de administrador/caja para abrir, registrar entradas/salidas fisicas y cerrar su propia sesion. La sesion queda bloqueada al cerrar; ventas quedan vinculadas y el arqueo se calcula en centavos con monto inicial + ventas en efectivo + entradas - salidas. Transferencias y tarjetas no se suman al efectivo esperado. El propietario ve historial, movimientos e indicadores desde Reportes, sin acceso a la operacion de caja.
+
+Las busquedas y el alta AJAX de clientes usan los controladores existentes y restringen el acceso a administrador/caja. Las respuestas mutables incluyen el token CSRF renovado. Las notificaciones temporales se comparten desde el layout; las validaciones de formulario se mantienen visibles hasta corregirlas.
+
+La base deportes_total debe conservar sus datos. No se incluye una base vacia ni un volcado inicial. El archivo actualizacion_deportes_total_final.sql solo actualiza una base compatible preexistente. Verifica version y esquema antes de ejecutarlo.
+
+Las operaciones mutables y el cierre de sesion usan POST con token CSRF. Las sesiones de cuentas desactivadas se invalidan en la siguiente solicitud protegida. La cookie HttpOnly esta activada; cookie_secure sigue desactivada para el entorno HTTP local de XAMPP.
+
+En la base revisada, el indice UNIQUE por referencia y talla ya esta aplicado. No vuelvas a ejecutar la migracion up alli. Los archivos reversibles estan en database/migrations; la migracion down elimina solo ese indice, sin borrar registros.
+
+Los indices auxiliares para busqueda de productos y clientes se definen en database/migrations/2026_11_12_sales_search_indexes_up.sql y pueden revertirse con el archivo down correspondiente. Comprueba el esquema antes de aplicar estas migraciones a otra instalacion.
+
+La migracion reversible de costos/caja es database/migrations/2026_11_12_costs_and_cash_register_up.sql (down para reversion estructural). Aplícala una sola vez por base. El seed database/seeds/demo_deportes_total_2026_11_09_11.sql borra datos comerciales existentes y los reemplaza por el escenario ficticio 9-11 Nov 2026; conserva usuarios, pero debe ejecutarse solo despues de una copia de seguridad completa.
+
+INSTALACION LOCAL
+-----------------
+1. Haz una copia de seguridad de la carpeta y de la base de datos.
+2. Coloca DeportesTotal en htdocs e inicia Apache y MySQL/MariaDB.
+3. Ajusta application/config/database.php para tu instalacion.
+4. Conserva la base existente y verifica que incluya las tablas y columnas requeridas antes de aplicar la actualizacion SQL.
+5. Abre http://localhost/DeportesTotal/ e inicia sesion con una cuenta activa.
+
+Las operaciones por WhatsApp e Instagram se registran manualmente; no hay integracion con sus API.
